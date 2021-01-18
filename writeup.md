@@ -103,7 +103,7 @@ The process for identifying the lane pixels were done in two steps. Both are wri
 
 The second step is described at the method `search_around_poly(binary_warped, left_fit, right_fit)` and, besides the binary image, it will rely on the previously fitted 2nd order polynomials passed as the `left_fit` and `right_fit` as arguments for this methods. It will use the hyperparemeter `margin`, line 97, to specify which is space in each side of the polynomials in which this method sould search for the lane pixels. 
 
-![all text][[image7]]
+![all text][image7]
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
@@ -111,7 +111,7 @@ The proccess for calculating the radius is located at the `project.ipynb`, in th
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
-I implemented this step in lines # through # in my code in `yet_another_file.py` in the function `map_lane()`.  Here is an example of my result on a test image:
+The entire proccess is shown at the IPython notebook `project.ipynb` at the 6th code cell in lines 6 through 29. 
 
 ![alt text][image8]
 
@@ -129,4 +129,14 @@ Here's a [link to my video result](./test_videos_output/project_video.mp4)
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+The first challenge was to correctly tune the threshold in order to extract the lanes for de video. Although several atempts were made to include sobel operators to increase it's robustness, the best result achieved was by only filtering some specific colors related to the lane markings at the ground. The inclusion of those operators made the code prone to, in some portions of the movie, lose detection for several frames. 
+
+This behaviour does not imply that those operators could not help to achieve a better result, but, as the number of parameters and options increases it is very difcult to tune those parameters in order to correctly extract the lane marking while making it robust to ignore another kind of vehicles or lane markings. 
+
+This fine tunning made around the `project_video`  for the lane segmentation around it's collor makes difficult to the pipeline to work correctly for very diferent scenarios. 
+
+Other types of situations that could lead to a erronous behaviour would be if another vehicle, during a take over or traffic jam, occlude the lane markings for a extended period of time, making the detection invalid. One improvement would be to rate the lane detections and, given the assumption that the markings are always paralell and the lane width is known and does not change, to use the lane with the best rate to estimate the another one that does not have an score considered good enought to be accounted. 
+
+Other step made in order to improve the detection was to specify a minimum number of pixels in the x direction for correctly fitting the 2nd order polynomial. It was observed that in some cases, if the points were not distribued along the height of the image, the fit was prone to yield an bad result, leading the system to lose it's detection in sequent frames due to it's `search_around_poly` method, that search lane around previously detected regions. 
+
+The pipeline is prone to fail if the detection is unable to correctly segment lane markings for several frames and, is this case, if the fited polynomial is lost or jumps to another position, it will need some sort of reset mechanism to restore it to the right position. 
