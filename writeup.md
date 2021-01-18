@@ -31,7 +31,7 @@ The goals / steps of this project are the following:
 
 [image7]: ./output_images/poly_example.png "Poly search Example"
 
-[image8]: ./output_images/pipeline_example.png "Pipeline example"
+[image8]: ./output_images/pipeline_example_v2.png "Pipeline example"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 
