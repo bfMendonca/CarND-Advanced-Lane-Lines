@@ -43,7 +43,7 @@ The goals / steps of this project are the following:
 
 #### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  [Here](https://github.com/udacity/CarND-Advanced-Lane-Lines/blob/master/writeup_template.md) is a template writeup for this project you can use as a guide and a starting point.  
 
-All of the project implementation were made at the "project.ipynb" file. The sections were divided in order to best describe the proccess and methods that were written in order to address those points
+All of the project implementation were made at the "project.ipynb" file. The sections were divided in order to best describe the process and methods that were written in order to address those points
 
 ### Camera Calibration
 
@@ -59,16 +59,17 @@ The checkboard corners were found by using the opencv method, findChessboardCorn
 
 #### 1. Provide an example of a distortion-corrected image.
 
-For distortion correction the 'test_images/straight_lines1.jpg' image was loaded using imread and undistorted using the cv2.undistort with the camera calibration matrix mtx obtained using the proccess described above
+For distortion correction the 'test_images/straight_lines1.jpg' image was loaded using imread and undistorted using the cv2.undistort with the camera calibration matrix mtx obtained using the process described above
 
 ![alt text][image3]
 ![alt text][image4]
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
-The process for extracting the lanes is presented at 'threshold_pipeline.py' in lines 1 through 45. The process started by applying the distortion correction to the image at the line 3, and, using this corrected image, converte it to the HLS color space. First, for the white lanes, the L channel was thresholded for high values Lightness values, line 14.
+The process for extracting the lanes is presented at the 4th code cell at the IPython notebook 'project.ipynb',  in lines 76 through 120. The process started by applying the distortion correction to the image at the line 78, and, using this corrected image, converte it to the HLS color space. First, for the white lanes, the L channel was thresholded for high values Lightness values, line 89.
 
-Secondly the yellow lanes were extracted using an HLS filter for yellow colors. The process for filtering yellow colors is implemented in lines 26 through 36. It's important to point out that the values for filtering the yellow color was based on the implementation discussed on the following link: 
+Secondly the yellow lanes were extracted using an HLS filter for yellow colors. The process for filtering yellow colors is implemented in lines 101 through 107. 
+It's important to point out that the values for filtering, and the usage of the color mask for the yellow color was based on the implementation discussed on the following link: 
 https://medium.com/@tjosh.owoyemi/finding-lane-lines-with-colour-thresholds-beb542e0d839
 
 ![alt text][image5]
@@ -96,15 +97,19 @@ The process for identifying the lane pixels were done in two steps. Both are wri
 
 The second step is described at the method `search_around_poly(binary_warped, left_fit, right_fit)` and, besides the binary image, it will rely on the previously fitted 2nd order polynomials passed as the `left_fit` and `right_fit` as arguments for this methods. It will use the hyperparemeter `margin`, line 97, to specify which is space in each side of the polynomials in which this method sould search for the lane pixels. 
 
-![all text][image7]
+![alt text][image7]
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-The proccess for calculating the radius is located at the `project.ipynb`, in the 2nd code cell in lines 63 through 74. The calcualted radius is saved for each lane in the variable radius_of_curvature.
+The process for calculating the radius is located at the `project.ipynb`, in the 2nd code cell in lines 67 through 75. The calcualted radius is saved for each lane in the variable radius_of_curvature.
+
+The distance from the lane center is calculated in the 6th code cell in lines 25 through 28. 
+
+Both calculations need the relation between pixels and meters for correctly display the output in meters. Those constants are made "global variables" in the 2nd code cell in lines 4 through 5, defined as mx and my. 
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
-The entire proccess is shown at the IPython notebook `project.ipynb` at the 6th code cell in lines 6 through 29. 
+The entire process is shown at the IPython notebook `project.ipynb` at the 6th code cell in lines 6 through 32. The method `procces(image)` will run the entire pipeline in an given frame and return an frame with the information overlayed at the image
 
 ![alt text][image8]
 
